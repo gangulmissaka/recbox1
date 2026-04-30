@@ -1,0 +1,76 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">RecipeBox</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+
+        <!-- PUBLIC ZONE - any outpost can see-->
+        <li class="nav-item">
+          <%= link_to 'Home', root_path, class:"nav-link" %>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/search">Search</a>
+        </li>
+        <li class="nav-item">
+          <%= link_to 'About Us', about_path, class:"nav-link" %>
+        </li>
+
+        <!-- Sign Up - only loged out users can see-->
+        <% if !logged_in? %>
+          <li class="nav-item">
+            <%= link_to 'Sign Up', new_user_path, class:"nav-link" %>
+          </li>
+        <% end %>
+
+        <!-- Sign In - only logged out users can see-->
+        <% if !logged_in? %>
+          <li class="nav-item">
+            <%= link_to 'Sign In', login_path, class:"nav-link" %>
+          </li>
+        <% end %>
+
+        
+        <!-- STANDARD USER ZONE -->
+        <% if logged_in? && !is_administrator? %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" 
+               data-bs-toggle="dropdown">User</a>
+            <ul class="dropdown-menu">
+              <%= link_to "My Account", userhome_path, class:"dropdown-item" %>
+              <%= link_to "My Recipes", your_recipes_path, class:"dropdown-item" %>
+              <li><hr class="dropdown-divider"></li>
+              <%= link_to "Add New Recipe", new_recipe_path, class:"dropdown-item" %>
+            </ul>
+          </li>
+        <% end %>
+
+
+        <!-- ADMIN ZONE -->
+        <% if logged_in? && is_administrator? %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" 
+               data-bs-toggle="dropdown">Admin</a>
+            <ul class="dropdown-menu">
+              <%= link_to "Admin Home", admin_path, class:"dropdown-item" %>
+              <%= link_to 'Manage Users', users_path, class:"dropdown-item" %>
+            </ul>
+          </li>
+        <% end %>
+
+
+        <!-- Sign Out - logged in users only -->
+        <% if logged_in? %>
+          <li class="nav-item">
+            <%= button_to "Sign Out", logout_path, method: :delete, 
+                class:"btn btn-link nav-link" %>
+          </li>
+        <% end %>
+
+
+      </ul>
+    </div>
+  </div>
+</nav>
